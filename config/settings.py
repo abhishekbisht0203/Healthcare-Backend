@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # Third party
     "rest_framework",
     "corsheaders",
+    "django_filters",
     # Local
     "common",
     "users",
@@ -156,6 +157,11 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
     ),
     "DEFAULT_PAGINATION_CLASS": "common.pagination.StandardResultsSetPagination",
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
     "PAGE_SIZE": int(env("API_DEFAULT_PAGE_SIZE", "20")),
     "EXCEPTION_HANDLER": "common.exceptions.custom_exception_handler",
     "DEFAULT_THROTTLE_CLASSES": (
