@@ -5,6 +5,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from common.permissions import IsMappingParticipantOrReadOnly
 from patients.models import Patient
 
 from .models import PatientDoctorMapping
@@ -23,7 +24,7 @@ class MappingViewSet(viewsets.ModelViewSet):
     ``DELETE /api/mappings/<id>/``     remove the assignment with id ``<id>``
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMappingParticipantOrReadOnly]
 
     def get_serializer_class(self):
         if self.action == "create":

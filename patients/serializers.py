@@ -33,9 +33,11 @@ class PatientSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created_at", "updated_at")
 
     def get_doctors(self, obj):
+        # obj.mappings holds PatientDoctorMapping rows, so unwrap to the doctor.
+        # The viewset prefetches "mappings__doctor", so this costs no extra queries.
         return [
             {"id": doctor.id, "name": doctor.name, "specialization": doctor.specialization}
-            for doctor in obj.mappings.select_related("doctor").all()
+            for doctor in (mapping.doctor for mapping in obj.mappings.all())
         ]
 
     def validate_name(self, value):
